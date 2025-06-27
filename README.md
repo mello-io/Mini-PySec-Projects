@@ -27,9 +27,9 @@ Projects in python to;
 
 ## 🔍 Subdomain Scanner
 
-The Subdom Scanner V1 - 06/26/2025
+Subdom Scanner V1 - 06/26/2025
 
-Is a standard subdomain scanner made in python;
+Is a standard subdomain scanner made in python, to find different types of subdomains for a domain.
 - Download both subdom-scanner.py and subdomains.txt for usuage.
 - Usuage;
   ```
@@ -43,6 +43,30 @@ Is a standard subdomain scanner made in python;
   >python -m pip install --upgrade pip
   >pip install requests pyfiglet
   >python subdom-scanner.py google.com
+  ```
+
+---
+
+## 🔍 Directory Scanner
+
+Directory Scanner V1 - 06/27/2025
+
+Is a standard directory scanner made in python, to use on valid domains and subdomains to find internal directories and interesting endpoints.
+- Download both subdir-scanner.py and wordlist.txt for usuage.
+- Usuage;
+  ```
+  Linux;
+  #chmod +x subdir-scanner.py
+  #python3 -m pip install --upgrade pip
+  #pip3 install requests pyfiglet
+  #python3 subdir-scanner.py google.com
+    > Enter extension of choice.
+
+  Windows;
+  >python -m pip install --upgrade pip
+  >pip install requests pyfiglet
+  >python subdir-scanner.py google.com
+    > Enter extension of choice.
   ```
 
 ---
