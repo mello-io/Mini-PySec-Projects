@@ -33,7 +33,7 @@ Projects in python to;
 🖥️ Dependencies
 ```
 #python3 -m pip install --upgrade pip
-#pip3 install requests pyfiglet scappy.all requests sys
+#pip3 install requests pyfiglet scapy requests sys
 
 ```
 
