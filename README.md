@@ -1,6 +1,6 @@
 <h1> Mini-PySec-Projects </h1>
 
-These are small scale locally deployable python projects for offensive and defensive security.
+These are small scale locally Linux/UNIX deployable python projects for offensive and defensive security testing.
 
 These projects are made with guidance from Tryhackme. And if you are a beginner and would like to make something like this too, check in <a href="https://tryhackme.com/module/scripting-for-pentesters"> here </a> for some great steps and methods. Feel free to test these projects locally and share me your thoughts, suggestions and code improvement via my Linkedin.
 
@@ -10,13 +10,19 @@ These projects are made with guidance from Tryhackme. And if you are a beginner 
 </a>
   
 ---
-❗Overall PySec Phase : ✅ Planning - ⚒️ Development & Testing - ⚒️ Initial Deployment
+❗Overall Project Phase : 
+
+✅ Planning - 
+⚒️ Development & Testing - 
+⚒️ Initial Deployment - 
+⚠️ Feature Development - 
+⚠️ Code Maintainance
 
 ---
 
 
 Projects in python to;
-- Enumerate the target's subdomain
+- Enumerate the target's subdomain & subdirectories
 - Build a simple keylogger
 - Scan the network to find target systems
 - Scan any target to find the open ports
@@ -33,16 +39,10 @@ Is a standard subdomain scanner made in python, to find different types of subdo
 - Download both subdom-scanner.py and subdomains.txt for usuage.
 - Usuage;
   ```
-  Linux;
   #chmod +x subdom-scanner.py
   #python3 -m pip install --upgrade pip
   #pip3 install requests pyfiglet
   #python3 subdom-scanner.py google.com
-
-  Windows;
-  >python -m pip install --upgrade pip
-  >pip install requests pyfiglet
-  >python subdom-scanner.py google.com
   ```
 
 ---
@@ -55,17 +55,10 @@ Is a standard directory scanner made in python, to use on valid domains and subd
 - Download both subdir-scanner.py and wordlist.txt for usuage.
 - Usuage;
   ```
-  Linux;
   #chmod +x subdir-scanner.py
   #python3 -m pip install --upgrade pip
   #pip3 install requests pyfiglet
   #python3 subdir-scanner.py google.com
-    > Enter extension of choice.
-
-  Windows;
-  >python -m pip install --upgrade pip
-  >pip install requests pyfiglet
-  >python subdir-scanner.py google.com
     > Enter extension of choice.
   ```
 
