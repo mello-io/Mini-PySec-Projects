@@ -4,7 +4,7 @@ from scapy.all import *
 
 # --- ASCII Banner ---
 def print_banner():
-    ascii_banner = pyfiglet.figlet_format("Mini - PySec \nARP Scanner")
+    ascii_banner = pyfiglet.figlet_format("Mini - PySec \nARP Scanner v1")
     print(ascii_banner)
     print("By - @mello-io")
     print("-" * 30) # Separator for readability
