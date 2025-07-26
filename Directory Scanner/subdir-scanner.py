@@ -2,7 +2,7 @@ import requests
 import pyfiglet
 import sys
 
-ascii_banner = pyfiglet.figlet_format("Mini - PySec \nDirectory \nScanner v.1")
+ascii_banner = pyfiglet.figlet_format("Mini - PySec \nDirectory \nScanner v1")
 print(ascii_banner)
 
 print("By - @mello-io")
