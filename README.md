@@ -1,264 +1,254 @@
-<h1> Mini-PySec-Projects </h1>
+<h1>PySec Suite — v2.0</h1>
 
-These are small scale locally Linux/UNIX deployable python projects for offensive and defensive security testing.
-
-These projects are made with guidance from Tryhackme. And if you are a beginner and would like to make something like this too, check in <a href="https://tryhackme.com/module/scripting-for-pentesters"> here </a> for some great steps and methods. Feel free to test these projects locally and share me your thoughts, suggestions and code improvement via my Linkedin.
+A unified Python CLI security toolkit. Six tools, one entry point, consistent output, optional TXT export on every operation.
 
 <p align="center">
 <a href="https://www.linkedin.com/in/dmelloderick/">
   <img height="50" src="https://user-images.githubusercontent.com/46517096/166973395-19676cd8-f8ec-4abf-83ff-da8243505b82.png"/>
 </a>
-  
----
-❗Overall Project Phase : 
-
-✅ Planning - 
-✅ Design - 
-✅ Development & Testing - 
-✅ Initial Deployment - 
-🛠️ Feature Development - 
-⚠️ Code Maintainance
 
 ---
 
-Projects in python to;
-- Enumerate the target's subdomain & subdirectory files.
-- Scan the network to find target systems IP & MAC addresses
-- Scan a target to find the open ports
-- Download files from the internet
-- Cracking hashes
-- Key Logging
+❗Overall Project Phase :
+
+✅ Planning -
+✅ Design -
+✅ Development & Testing -
+✅ v1 Deployment -
+✅ v2 Feature Development -
+🛠️ v2 Integration & Polish
 
 ---
 
-## 🖥️ Prerequisites & Dependency
+## What's New in v2.0
 
-Before running any of these scripts, ensure you have the latest Python3 and pip installed. It's highly recommended to use a virtual environment to manage dependencies.
+v1 was six standalone scripts in separate folders — each with its own banner, its own argument style, no shared output format. v2 unifies everything:
 
+| | v1 | v2 |
+| --- | --- | --- |
+| Entry point | Navigate to folder, run individual script | `python main.py` — single menu |
+| Output | Plain `print()` statements | Rich tables, panels, colour, progress bars |
+| Export | None | Optional TXT export on every tool |
+| Subdomain Scanner | HTTP probing (slow, inaccurate) | DNS resolution via `dnspython` + 50 threads |
+| Directory Scanner | Sequential, binary found/not-found | 30 threads, HTTP status code + size per result |
+| Port Scanner | Sequential, no service names | 100 threads, service names, optional banner grab |
+| Hash Cracker | Manual algorithm selection | Auto-detects algorithm from hash length |
+| File Fetcher | Download + size only | SHA256 checksum computed during download |
+| Network Scanner | IP + MAC only | IP + MAC + vendor hint (61-entry OUI map) |
 
-1. Create a Virtual Environment (Optional but Recommended):
+---
+
+## Prerequisites
+
+- Python 3.8+
+- pip
+
+> Network Scanner requires elevated privileges (`sudo` on Linux/macOS, run as Administrator on Windows) for raw socket access via scapy.
+
+---
+
+## Install
+
+```bash
+git clone https://github.com/mello-io/Mini-PySec-Projects.git
+cd Mini-PySec-Projects
+
+python -m venv venv
+
+# Linux / macOS
+source venv/bin/activate
+
+# Windows
+.\venv\Scripts\activate
+
+pip install -r requirements.txt
 ```
-python3 -m venv venv
+
+---
+
+## Launch
+
+```bash
+python main.py
 ```
 
-2. Activate the Virtual Environment:
-    - Linux/macOS:
-      ```
-      source venv/bin/activate
-      ```
-    - Windows:
-      ```
-      .\venv\Scripts\activate
-      ```
+```text
+    ____        _____              _____       _ __
+   / __ \__  __/ ___/___  _____   / ___/__  __(_) /____
+  / /_/ / / / /\__ \/ _ \/ ___/   \__ \/ / / / / __/ _ \
+ / ____/ /_/ /___/ /  __/ /__    ___/ / /_/ / / /_/  __/
+/_/    \__, //____/\___/\___/   /____/\__,_/_/\__/\___/
+      /____/
+  v2.0 | Security Toolkit | Educational Use Only
 
-3. Install Dependencies:\
-   Each project may require specific Python libraries. You can install all common ones used across these projects with:
-   ```
-   pip install pyfiglet requests scapy keyboard
-   ```
+  Select a tool:
 
-   <i>(Note: ` scapy ` and ` keyboard ` might require elevated privileges for installation or execution on some systems.)</i>
-
----
-
-## 🔍 Subdomain Scanner
-
-This tool reads a list of potential second level domains (SLD) from a file and attempts to resolve them against a specified target domain to identify live subdomains.
-
-> Current version : v1
-
-- Features:
-  - Dynamic target domain input via command-line argument.
-  - Reads subdomains from a ` subdomains.txt ` file.
-  - Identifies and prints valid subdomains.
-
-- How to Use:
-  - Save the script as ` subdom-scanner.py `.
-  - Create a ` subdomains.txt ` file in the same directory with one subdomain per line (e.g., www, mail, dev).\
-    OR\
-    Use the preset ` subdomains.txt ` file within the folder.
-  - Run the script from your terminal:\
-    ```
-    python3 subdom-scanner.py example.com
-    ```
-
-    <i> (Replace ` example.com ` with your target domain.) </i>
+  [1]  Subdomain Scanner
+  [2]  Directory Scanner
+  [3]  Network Scanner
+  [4]  Port Scanner
+  [5]  File Fetcher
+  [6]  Hash Cracker
+  [0]  Exit
+```
 
 ---
 
-## 🔍 Directory Scanner
+## Tools
 
-This tool attempts to find common or hidden subdirectory files on a target website by making HTTP requests based on entries from a wordlist.
+### 🔍 Subdomain Scanner
 
-> Current Version : v1
+Enumerates live subdomains via DNS resolution against a wordlist.
 
-- Features:
-  - Dynamic target URL input.
-  - Dynamic extension scan based from varied choices. 
-  - Reads directory/file names from ` wordlist.txt `.
-  - Identifies and prints valid subdirectories.
+**v2:** Uses `dnspython` for proper DNS lookups (v1 used HTTP — unreliable). Threaded with 50 concurrent workers. Displays resolved IP alongside each found subdomain.
 
-- How to Use:
-  - Save the script as ` subdir-scanner.py `.
-  - Create a wordlist.txt file in the same directory with common directory/file names (e.g., admin, backup, robots.txt).\
-    OR\
-    Use the preset ` wordlist.txt ` file within the folder.
-  - Run the script from your terminal:
-    ```
-    python3 subdir-scanner.py example.com
-    ```
-
-    <i> (Replace ` example.com ` with your target domain. && Follow the prompts to enter the target URL and wordlist path.) </i>
+```text
+Target domain: example.com
+Wordlist: wordlists/subdomains.txt (50,000 entries)
+```
 
 ---
 
-## 🔍 Network Scanner
+### 🔍 Directory Scanner
 
-This script sends ARP requests to a specified IP range on a chosen network interface to identify devices that respond, revealing their IP and MAC addresses.
+Discovers accessible paths on a web target by probing a wordlist over HTTP.
 
-> Current Version : v1
+**v2:** 30 concurrent threads replace the sequential loop. Each result shows HTTP status code and response size. 403 responses included — a forbidden resource is still useful recon intel. Optional extension filter (`.php`, `.html`, `.txt`, `.bak`, custom).
 
-- Features:
-  - Dynamic user input for network interface (e.g., ` eth0 `, ` wlan0 `).
-  - Dynamic user input for IP address range (e.g., ` 192.168.1.0/24 `).
-  - Lists available interfaces to assist the user.
-  - Robust error handling for permissions and invalid interfaces.
-
-- How to Use:
-  - Save the script as ` arp-scanner.py `.
-  - Run the script with elevated privileges (required for ` scapy `):
-    - Linux/macOS:
-      ```
-      sudo python3 arp_scanner.py
-      ```
-    - Windows: Run Command Prompt/PowerShell as Administrator, then run;
-      ```
-      python arp_scanner.py
-      ```
-  - Follow the prompts to enter your desired interface and IP range.
+```text
+Target URL: http://example.com
+Extension: .php  (or none for bare paths)
+Wordlist: wordlists/wordlist.txt (81,629 entries)
+```
 
 ---
 
-## 🖥️ Port Scanner
+### 🌐 Network Scanner
 
-A versatile TCP port scanner that allows scanning common or all ports on a target IP address or hostname to determine if they are open, indicating a running service.
+ARP sweep to discover active hosts on a local network segment.
 
-> Current Version : v1
+**v2:** MAC OUI lookup against a 61-entry static vendor map adds manufacturer hints (Cisco, Raspberry Pi, VMware, Apple, etc.) with no external API calls. Results displayed in IP | MAC | Vendor table.
 
-- Features:
-  - Dynamic target input (IP address or hostname, with resolution).
-  - Two scan types:
-    - Top 1024 TCP Ports: Scans common, well-known ports.
-    - Full TCP Port Scan: Scans all 65535 ports (with a warning confirmation due to time and noise).
-  - Progress bar to show scan status.
-  - Comprehensive error handling for network issues and invalid inputs.
-  - Displays all found open ports.
+> Requires elevated privileges (sudo / Administrator).
 
-- How to Use:
-  - Save the script as ` port-scanner.py `.
-  - Run the script:
-    ```
-    python3 port_scanner.py
-    ```
-  - Follow the prompts to enter the target and select the scan type.
+```text
+Interface: eth0
+IP range: 192.168.1.0/24
+```
 
 ---
 
-## 🌐🗄️ File Downloader
+### 🖥️ Port Scanner
 
+TCP port scanner with service identification and optional banner grab.
 
-A utility to download files from a given URL and saves it to your local machine, showing download progress.
+**v2:** 100 concurrent threads vs. v1's sequential loop — top-1024 scan completes in seconds. `socket.getservbyport()` maps open ports to well-known service names. Optional banner grab surfaces service version strings on open ports.
 
-> Current Version : v1
-
-- Features:
-  - Dynamic URL input.
-  - User defined output filename, with auto-derivation fallback.
-  - Handles HTTP redirects.
-  - Progress bar for large file downloads.
-  - Prompts before overwriting existing files.
-  - Robust error handling for network issues and HTTP errors.
-
-- How to Use:
-  - Save the script as ` file-fetcher.py `.
-  - Run the script:
-    ```
-    python3 file-fetcher.py
-    ```
-  - Follow the prompts to enter the URL and a desired filename.
+```text
+Target: 192.168.1.1
+Scan type: [1] Top 1024  [2] Full 65535
+Banner grab: [y/n]
+```
 
 ---
 
-## 🔐 Hash Cracker
+### 🗄️ File Fetcher
 
-A versatile hash cracker that takes a cryptographic hash and a wordlist, then tries to match the hash by hashing each word in the list with various algorithms until a match is found.
+Downloads a file from a URL with progress display and integrity verification.
 
-> Current Version : v1
+**v2:** SHA256 checksum computed incrementally per chunk during download — no second pass over the file. Displayed on completion so you can verify against a known-good hash.
 
-- Features:
-  - Dynamic user input for wordlist file location.
-  - Supports multiple hash algorithms (MD5, SHA1, SHA256, SHA512).
-  - Validates input hash format and length.
-  - Memory-efficient processing for large wordlists.
-  - Progress bar to show cracking status.
-  - Provides clear output if the password is found or not.
-
-- How to Use:
-  - Save the script as ` hash-cracker.py `.
-  - Create a ` wordlist.txt ` file (or any name) with one password candidate per line.\
-    OR\
-    Use ` rockyou.txt ` found within the standard Kali deployment.
-  - Run the script:
-    ```
-    python3 hash-cracker.py
-    ```
-  - Follow the prompts to enter the wordlist path, select the hash algorithm, and provide the hash to crack.
+```text
+URL: https://example.com/file.zip
+Output filename: file.zip  (or Enter to auto-derive)
+```
 
 ---
 
-## ⌨️ Keylogger
+### 🔐 Hash Cracker
 
-A basic keylogger, demonstrating keyboard event capture and local logging. It saves the captured event information to a local file, providing a clear, readable output.
+Wordlist-based hash cracker supporting MD5, SHA1, SHA256, and SHA512.
 
-## ⚠️⚠️ ETHICAL AND LEGAL WARNING ⚠️⚠️
-This tool is developed and shared strictly for educational and isolated (VM environment) testing purposes. Deploying a keylogger on any system without explicit, informed consent of the user and the system owner is illegal and unethical. Ensure you comply with all applicable laws and regulations in your jurisdiction. Use this tool responsibly.
+**v2:** Hash algorithm auto-detected from length — no manual selection needed. Live crack speed (hashes/sec) and elapsed time displayed in progress bar and summary.
 
-> Current Version : v1
+| Hash Length | Algorithm |
+| --- | --- |
+| 32 | MD5 |
+| 40 | SHA1 |
+| 64 | SHA256 |
+| 128 | SHA512 |
 
-- Features:
-  - Logs all pressed keys to ` keylog.txt `.
-  - Runs in the background.
-  - Converts special keys (e.g., ` space `, ` enter `, ` shift `) into readable strings.
-  - Configurable stop hotkey ( ` ctrl+alt+x ` by default).
-  - Basic error handling for file writing.
+```text
+Hash: 5f4dcc3b5aa765d61d8327deb882cf99
+  → Algorithm detected: MD5 (length 32)
+Wordlist: wordlists/wordlist.txt
+```
 
-- How to Use:
-  - Save the script as ` transcriptor.py `.
-  - Crucial: Understand and accept the ethical implications.
-  - Run the script with elevated privileges (required for keyboard hooking):
-    - Linux/macOS:
-      ```
-      sudo python3 transcriptor.py
-      ```
-    - Windows: Run Command Prompt/PowerShell as Administrator:
-      ```
-      python transcriptor.py
-      ```
-  - The keylogger will start logging. Press ` Ctrl + Alt + X ` to stop it.
-  - Check keylog.txt in the same directory for the logged keystrokes.
+---
+
+## Export
+
+After every operation, the tool prompts:
+
+```text
+Save results to TXT? [y/n]:
+```
+
+Files are saved to `./output/` (auto-created) with the naming convention:
+
+```text
+{tool}_{target}_{YYYY-MM-DD_HH-MM}.txt
+```
+
+Examples:
+
+- `Port_Scanner_192.168.1.1_2026-03-11_14-30.txt`
+- `Hash_Cracker_5f4dcc3b5aa7_2026-03-11_15-22.txt`
+- `Subdomain_Scanner_example.com_2026-03-11_15-01.txt`
+
+Each file includes a metadata header (tool, target, settings, timestamp) followed by the result data and a summary line.
+
+---
+
+## Wordlists
+
+Bundled defaults in `wordlists/`:
+
+| File | Entries | Used by |
+| --- | --- | --- |
+| `subdomains.txt` | 50,000 | Subdomain Scanner |
+| `wordlist.txt` | 81,629 | Directory Scanner, Hash Cracker |
+
+Any user-supplied wordlist path is accepted at each prompt.
+
+---
+
+## ⚠️ Ethical & Legal Notice
+
+These tools are provided strictly for **educational purposes** and **authorised security testing** in isolated or lab environments (VMs, CTF platforms, systems you own or have explicit written permission to test).
+
+- Do not use these tools against systems you do not own or have written authorisation to test.
+- Scanning or probing networks, hosts, or web applications without permission may be illegal under computer misuse laws in your jurisdiction.
+- The author accepts no responsibility for misuse of these tools.
+
+---
+
+## ⌨️ Keylogger — Deferred
+
+The keylogger (`Key Logger/transcriptor.py`) from v1 is not included in the PySec Suite v2.0 menu. It is under separate development consideration and will be revisited for v3.
 
 ---
 
 ## 📝 Contributions
 
-Feel free to fork this repository, open issues, or submit pull requests to improve these tools or add new ones.
+Feel free to fork, open issues, or submit pull requests.
 
 ---
 
 <!--
 ## 📄 License
 
-This work is licensed under the  
+This work is licensed under the
 **Creative Commons Attribution-NonCommercial-NoDerivatives 4.0 International (CC BY-NC-ND 4.0)**
 
 📌 *You may view and share this project with proper credit, but you may not modify it or use it commercially.*
