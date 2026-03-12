@@ -1,0 +1,32 @@
+# Virtual environment
+venv/
+.venv/
+
+# Python cache
+__pycache__/
+*.pyc
+*.pyo
+*.pyd
+
+# Environment variables
+.env
+
+# Tool output (user-generated, not committed)
+output/
+
+# Scaffolding / planning docs
+PRD.md
+DESIGN.md
+TECH_STACK.md
+TODO.md
+
+# Claude AI project files
+.claude/
+
+# OS artifacts
+.DS_Store
+Thumbs.db
+
+# IDE
+.vscode/
+.idea/
